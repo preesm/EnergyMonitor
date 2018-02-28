@@ -9,19 +9,23 @@
 #include <QSysInfo>
 #include <string.h>
 
+
 #include <iostream>
 #include <stdexcept>
 #include <stdio.h>
 #include <string>
+#include <sstream>
+#include <iomanip>
+#include <fstream>
 
 GetNode::GetNode()
 {
     usage[8] = {0,};
-
     for (int i = 0; i < 8; i++) {
-        QString temp;
-        temp.sprintf("/sys/devices/system/cpu/cpu%d/cpufreq/cpuinfo_cur_freq", i);
-        cpu_node_list[i] = temp.toStdString();
+      std::ostringstream oss;
+      oss << "/sys/devices/system/cpu/cpu" << i << "/cpufreq/cpuinfo_cur_freq";
+      std::string buf = oss.str();
+      cpu_node_list[i] = buf;
     }
 }
 
@@ -63,26 +67,23 @@ void GetNode::GetSystemInfo()
     os_name.erase(std::remove(os_name.begin(), os_name.end(), '\n'), os_name.end());
 }
 
-
 string GetNode::GetGPUCurFreq()
 {
-
-    QFile *fp;
-    QString freq;
-
+    float fVal = 0.;
     if (kernel_ver[0] == '4') {
-        freq.sprintf("%d", 600);
+      fVal = 600;
     } else {
-        fp = new QFile(GPUFREQ_NODE);
-        if (!fp->open(QIODevice::ReadOnly))
-            return 0;
-        freq = fp->readLine();
-        freq.sprintf("%d", freq.toInt());
-        fp->close();
-        delete fp;
+      std::fstream myfile(GPUFREQ_NODE, std::ios_base::in);
+      float a;
+      while (myfile >> a) {
+          fVal = a;
+      }
     }
-
-    return freq.toStdString();
+    std:string freq;
+    std::ostringstream oss;
+    oss << fVal;
+    freq = oss.str();
+    return freq;
 }
 
 string GetNode::GetCPUCurFreq(int cpuNum)

@@ -90,14 +90,14 @@ string GetNode::GetCPUCurFreq(int cpuNum)
     myfile >> fVal;
     string freq;
     ostringstream oss;
-    oss << fVal;
+    oss << (fVal/1000);
     freq = oss.str();
     return freq;
 }
 
 string GetNode::GetCPUTemp(int cpuNum)
 {
-    float fVal;
+    float fVal = 66;
     if (kernel_ver[0] == '4') {
       ostringstream oss;
       oss << TEMP_NODE_v4 << cpuNum << "/temp";
@@ -106,8 +106,12 @@ string GetNode::GetCPUTemp(int cpuNum)
       myfile >> fVal;
     } else {
       std::fstream myfile(TEMP_NODE, std::ios_base::in);
-      for (int i = 0; i < cpuNum + 1; i++)
-        myfile >> fVal;
+      string line;
+      for (int i = 0; i < (cpuNum + 1)*3 - 1; i++)
+        myfile >> line;
+      int temp;
+      myfile >> temp;
+      fVal = temp/1000;
     }
     ostringstream oss;
     oss << fVal;

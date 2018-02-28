@@ -79,8 +79,8 @@ string GetNode::GetGPUCurFreq()
           fVal = a;
       }
     }
-    std:string freq;
-    std::ostringstream oss;
+    string freq;
+    ostringstream oss;
     oss << fVal;
     freq = oss.str();
     return freq;
@@ -88,19 +88,14 @@ string GetNode::GetGPUCurFreq()
 
 string GetNode::GetCPUCurFreq(int cpuNum)
 {
-    QFile *fp = new QFile(QString::fromStdString(cpu_node_list[cpuNum]));
-    QString freq;
-
-    if (!fp->open(QIODevice::ReadOnly))
-        return 0;
-
-    freq = fp->readLine();
-    freq.sprintf("%d", freq.toInt()/1000);
-
-    fp->close();
-
-    delete fp;
-    return freq.toStdString();
+    float fVal;
+    std::fstream myfile(GPUFREQ_NODE, std::ios_base::in);
+    myfile >> fVal;
+    string freq;
+    ostringstream oss;
+    oss << fVal;
+    freq = oss.str();
+    return freq;
 }
 
 string GetNode::GetCPUTemp(int cpuNum)

@@ -9,6 +9,11 @@
 #include <QSysInfo>
 #include <string.h>
 
+#include <iostream>
+#include <stdexcept>
+#include <stdio.h>
+#include <string>
+
 GetNode::GetNode()
 {
     usage[8] = {0,};
@@ -20,28 +25,29 @@ GetNode::GetNode()
     }
 }
 
+std::string exec(const char* cmd) {
+    char buffer[128];
+    std::string result = "";
+    FILE* pipe = popen(cmd, "r");
+    if (!pipe) throw std::runtime_error("popen() failed!");
+    try {
+        while (!feof(pipe)) {
+            if (fgets(buffer, 128, pipe) != NULL)
+                result += buffer;
+        }
+    } catch (...) {
+        pclose(pipe);
+        throw;
+    }
+    pclose(pipe);
+    return result;
+}
+
 void GetNode::GetSystemInfo()
 {
-    QProcess p1;
-    QString cmd;
-
-    cmd = "lsb_release -r | awk '{print $2}'";
-    p1.start("bash", QStringList() << "-c" << cmd);
-    p1.waitForFinished(-1);
-    QString str = p1.readAllStandardOutput().simplified();
-    os_ver = str.toStdString();
-
-    cmd = "lsb_release -i | awk '{print $3}'";
-    p1.start("bash", QStringList() << "-c" << cmd);
-    p1.waitForFinished(-1);
-    str = p1.readAllStandardOutput().simplified();
-    os_name = str.toStdString();
-
-    cmd = "uname -r";
-    p1.start("bash", QStringList() << "-c" << cmd);
-    p1.waitForFinished(-1);
-    str = p1.readAllStandardOutput().simplified();
-    kernel_ver = str.toStdString();
+    os_ver = exec("bash -c \"lsb_release -r | awk '{print $2}'\"");
+    os_name = exec("bash -c \"lsb_release -i | awk '{print $3}'\"");
+    kernel_ver = exec("bash -c \"uname -r\"");
 }
 
 

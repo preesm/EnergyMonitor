@@ -1,8 +1,6 @@
 #ifndef GETNODE_H
 #define GETNODE_H
 
-#include <QWidget>
-#include <QFile>
 #include <sys/ioctl.h>
 #include <iostream>
 using namespace std;

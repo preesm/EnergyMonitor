@@ -46,7 +46,9 @@ std::string exec(const char* cmd) {
 void GetNode::GetSystemInfo()
 {
     os_ver = exec("bash -c \"lsb_release -r | awk '{print $2}'\"");
+    os_ver.erase(std::remove(os_ver.begin(), os_ver.end(), ' '), os_ver.end());
     os_name = exec("bash -c \"lsb_release -i | awk '{print $3}'\"");
+    os_name.erase(std::remove(os_name.begin(), os_name.end(), ' '), os_name.end());
     kernel_ver = exec("bash -c \"uname -r\"");
 }
 

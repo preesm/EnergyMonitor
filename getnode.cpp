@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QProcess>
 #include <QSysInfo>
+#include <string.h>
 
 GetNode::GetNode()
 {
@@ -15,7 +16,7 @@ GetNode::GetNode()
     for (int i = 0; i < 8; i++) {
         QString temp;
         temp.sprintf("/sys/devices/system/cpu/cpu%d/cpufreq/cpuinfo_cur_freq", i);
-        cpu_node_list[i] = temp;
+        cpu_node_list[i] = temp.toStdString();
     }
 }
 
@@ -27,20 +28,24 @@ void GetNode::GetSystemInfo()
     cmd = "lsb_release -r | awk '{print $2}'";
     p1.start("bash", QStringList() << "-c" << cmd);
     p1.waitForFinished(-1);
-    os_ver = p1.readAllStandardOutput().simplified();
+    QString str = p1.readAllStandardOutput().simplified();
+    os_ver = str.toStdString();
 
     cmd = "lsb_release -i | awk '{print $3}'";
     p1.start("bash", QStringList() << "-c" << cmd);
     p1.waitForFinished(-1);
-    os_name = p1.readAllStandardOutput().simplified();
+    str = p1.readAllStandardOutput().simplified();
+    os_name = str.toStdString();
 
     cmd = "uname -r";
     p1.start("bash", QStringList() << "-c" << cmd);
     p1.waitForFinished(-1);
-    kernel_ver = p1.readAllStandardOutput().simplified();
+    str = p1.readAllStandardOutput().simplified();
+    kernel_ver = str.toStdString();
 }
 
-QString GetNode::GetGPUCurFreq()
+
+string GetNode::GetGPUCurFreq()
 {
 
     QFile *fp;
@@ -58,12 +63,12 @@ QString GetNode::GetGPUCurFreq()
         delete fp;
     }
 
-    return freq;
+    return freq.toStdString();
 }
 
-QString GetNode::GetCPUCurFreq(int cpuNum)
+string GetNode::GetCPUCurFreq(int cpuNum)
 {
-    QFile *fp = new QFile(cpu_node_list[cpuNum]);
+    QFile *fp = new QFile(QString::fromStdString(cpu_node_list[cpuNum]));
     QString freq;
 
     if (!fp->open(QIODevice::ReadOnly))
@@ -75,10 +80,10 @@ QString GetNode::GetCPUCurFreq(int cpuNum)
     fp->close();
 
     delete fp;
-    return freq;
+    return freq.toStdString();
 }
 
-QString GetNode::GetCPUTemp(int cpuNum)
+string GetNode::GetCPUTemp(int cpuNum)
 {
     QFile *fp;
 
@@ -118,7 +123,7 @@ QString GetNode::GetCPUTemp(int cpuNum)
 int GetNode::open_sensor(const char *node, sensor_t *sensor)
 {
     if ((sensor->fd = open(node, O_RDWR)) < 0)
-        qDebug() << node << "Open Fail";
+        std::cerr << node << "Open Fail";
 
     return sensor->fd;
 }
@@ -202,7 +207,7 @@ void GetNode::enable_sensor(sensor_t *sensor, unsigned char enable)
     if (sensor->fd > 0) {
         sensor->data.enable = enable ? 1 : 0;
         if (ioctl(sensor->fd, INA231_IOCSSTATUS, &sensor->data) < 0)
-            qDebug() << "IOCTL Error";
+            std::cerr << "IOCTL Error";
     }
 }
 
@@ -210,7 +215,7 @@ int GetNode::read_sensor_status(sensor_t *sensor)
 {
     if (sensor->fd > 0) {
         if (ioctl(sensor->fd, INA231_IOCGSTATUS, &sensor->data) < 0)
-            qDebug() << sensor->data.name << "IOCTL Error";
+            std::cerr << sensor->data.name << "IOCTL Error";
     }
     return 0;
 }
@@ -219,7 +224,7 @@ void GetNode::read_sensor(sensor_t *sensor)
 {
     if (sensor->fd > 0) {
         if (ioctl(sensor->fd, INA231_IOCGREG, &sensor->data) < 0)
-            qDebug() << sensor->data.name << "IOCTL Error!";
+            std::cerr << sensor->data.name << "IOCTL Error!";
     }
 }
 

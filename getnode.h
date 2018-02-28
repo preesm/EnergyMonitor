@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QFile>
 #include <sys/ioctl.h>
+#include <iostream>
+using namespace std;
 
 #define GPUFREQ_NODE    "/sys/devices/11800000.mali/clock"
 #define TEMP_NODE       "/sys/devices/10060000.tmu/temp"
@@ -43,20 +45,20 @@ class GetNode
 {
 public:
     GetNode();
-    QString cpu_node_list[8];
+    string cpu_node_list[8];
     float armuV,armuA, armuW;
     float g3duV, g3duA, g3duW;
     float kfcuV, kfcuA, kfcuW;
     float memuV, memuA, memuW;
     int usage[8];
-    QString os_name1;
-    QString os_name;
-    QString os_ver;
-    QString kernel_ver;
+    string os_name1;
+    string os_name;
+    string os_ver;
+    string kernel_ver;
 
-    QString GetGPUCurFreq(void);
-    QString GetCPUCurFreq(int cpuNum);
-    QString GetCPUTemp(int cpuNum);
+    string GetGPUCurFreq(void);
+    string GetCPUCurFreq(int cpuNum);
+    string GetCPUTemp(int cpuNum);
     int GetCPUUsage(void);
     int calUsage(int cpu_idx, int user, int nice, int system, int idle);
 

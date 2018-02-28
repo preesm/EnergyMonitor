@@ -42,9 +42,9 @@ DisplaySysInfo::DisplaySysInfo(QWidget *parent) :
 
     getNode->GetSystemInfo();
 
-    ui->losname->setText(getNode->os_name + " : " + getNode->os_ver);
-    ui->lkernel->setText("Kernel : " + getNode->kernel_ver);
-    ui->lsw_ver->setText("Energy Monitor 1.3");
+    ui->losname->setText(QString::fromStdString(getNode->os_name + " : " + getNode->os_ver));
+    ui->lkernel->setText(QString::fromStdString("Kernel : " + getNode->kernel_ver));
+    ui->lsw_ver->setText(QString::fromStdString("Energy Monitor 1.3"));
 
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
@@ -212,20 +212,20 @@ void DisplaySysInfo::float2string()
 
 void DisplaySysInfo::displayCpuFrequency()
 {
-    ui->GPUFreqEdit->setText(getNode->GetGPUCurFreq());
-    ui->CPU0FreqEdit->setText(getNode->GetCPUCurFreq(0));
-    ui->CPU1FreqEdit->setText(getNode->GetCPUCurFreq(1));
-    ui->CPU2FreqEdit->setText(getNode->GetCPUCurFreq(2));
-    ui->CPU3FreqEdit->setText(getNode->GetCPUCurFreq(3));
-    ui->CPU4FreqEdit->setText(getNode->GetCPUCurFreq(4));
-    ui->CPU5FreqEdit->setText(getNode->GetCPUCurFreq(5));
-    ui->CPU6FreqEdit->setText(getNode->GetCPUCurFreq(6));
-    ui->CPU7FreqEdit->setText(getNode->GetCPUCurFreq(7));
-    ui->CPU4TempEdit->setText(getNode->GetCPUTemp(0));
-    ui->CPU5TempEdit->setText(getNode->GetCPUTemp(1));
-    ui->CPU6TempEdit->setText(getNode->GetCPUTemp(2));
-    ui->CPU7TempEdit->setText(getNode->GetCPUTemp(3));
-    ui->GPUTempEdit->setText(getNode->GetCPUTemp(4));
+    ui->GPUFreqEdit->setText(QString::fromStdString(getNode->GetGPUCurFreq()));
+    ui->CPU0FreqEdit->setText(QString::fromStdString(getNode->GetCPUCurFreq(0)));
+    ui->CPU1FreqEdit->setText(QString::fromStdString(getNode->GetCPUCurFreq(1)));
+    ui->CPU2FreqEdit->setText(QString::fromStdString(getNode->GetCPUCurFreq(2)));
+    ui->CPU3FreqEdit->setText(QString::fromStdString(getNode->GetCPUCurFreq(3)));
+    ui->CPU4FreqEdit->setText(QString::fromStdString(getNode->GetCPUCurFreq(4)));
+    ui->CPU5FreqEdit->setText(QString::fromStdString(getNode->GetCPUCurFreq(5)));
+    ui->CPU6FreqEdit->setText(QString::fromStdString(getNode->GetCPUCurFreq(6)));
+    ui->CPU7FreqEdit->setText(QString::fromStdString(getNode->GetCPUCurFreq(7)));
+    ui->CPU4TempEdit->setText(QString::fromStdString(getNode->GetCPUTemp(0)));
+    ui->CPU5TempEdit->setText(QString::fromStdString(getNode->GetCPUTemp(1)));
+    ui->CPU6TempEdit->setText(QString::fromStdString(getNode->GetCPUTemp(2)));
+    ui->CPU7TempEdit->setText(QString::fromStdString(getNode->GetCPUTemp(3)));
+    ui->GPUTempEdit->setText(QString::fromStdString(getNode->GetCPUTemp(4)));
 }
 
 void DisplaySysInfo::update()

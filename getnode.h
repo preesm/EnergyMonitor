@@ -58,7 +58,7 @@ public:
     string GetCPUCurFreq(int cpuNum);
     string GetCPUTemp(int cpuNum);
     int GetCPUUsage(void);
-    int calUsage(int cpu_idx, int user, int nice, int system, int idle);
+    int calUsage(int cpu_idx, int user, int system, int idle);
 
     int open_sensor(const char *node, sensor_t *sensor);
     void close_sensor(sensor_t *sensor);

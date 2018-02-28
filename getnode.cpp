@@ -1,15 +1,12 @@
 #include "getnode.h"
-#include <QFile>
 #include <sys/ioctl.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <fcntl.h>
-#include <QDebug>
-#include <QProcess>
-#include <QSysInfo>
 #include <string.h>
 
 
+#include <algorithm>    // std::remove
 #include <iostream>
 #include <stdexcept>
 #include <stdio.h>
@@ -20,8 +17,8 @@
 
 GetNode::GetNode()
 {
-    usage[8] = {0,};
     for (int i = 0; i < 8; i++) {
+      usage[i] = 0;
       std::ostringstream oss;
       oss << "/sys/devices/system/cpu/cpu" << i << "/cpufreq/cpuinfo_cur_freq";
       std::string buf = oss.str();
@@ -89,7 +86,7 @@ string GetNode::GetGPUCurFreq()
 string GetNode::GetCPUCurFreq(int cpuNum)
 {
     float fVal;
-    std::fstream myfile(GPUFREQ_NODE, std::ios_base::in);
+    std::fstream myfile(cpu_node_list[cpuNum].c_str(), std::ios_base::in);
     myfile >> fVal;
     string freq;
     ostringstream oss;
@@ -100,38 +97,22 @@ string GetNode::GetCPUCurFreq(int cpuNum)
 
 string GetNode::GetCPUTemp(int cpuNum)
 {
-    QFile *fp;
-
-    char buf[16];
-
+    float fVal;
     if (kernel_ver[0] == '4') {
-        fp = new QFile(TEMP_NODE_v4 + QString::number(cpuNum) + "/temp");
-
-        if (!fp->open(QIODevice::ReadOnly)) {
-            return 0;
-        }
-
-        fp->read(buf, 2);
-        buf[2] = '\0';
-        fp->close();
-        delete fp;
-
-        return buf;
+      ostringstream oss;
+      oss << TEMP_NODE_v4 << cpuNum << "/temp";
+      string path = oss.str();
+      std::fstream myfile(path.c_str(), std::ios_base::in);
+      myfile >> fVal;
     } else {
-        fp = new QFile(TEMP_NODE);
-
-        if (!fp->open(QIODevice::ReadOnly)) {
-            return 0;
-        }
-
-        for (int i = 0; i < cpuNum + 1; i++)
-            fp->read(buf, 16);
-        fp->close();
-        delete fp;
-        buf[12] = '\0';
-
-        return &buf[10];
+      std::fstream myfile(TEMP_NODE, std::ios_base::in);
+      for (int i = 0; i < cpuNum + 1; i++)
+        myfile >> fVal;
     }
+    ostringstream oss;
+    oss << fVal;
+    string temp = oss.str();
+    return temp;
 }
 
 
@@ -249,7 +230,7 @@ void GetNode::close_sensor(sensor_t *sensor)
         close(sensor->fd);
 }
 
-int GetNode::calUsage(int cpu_idx, int user, int nice, int system, int idle)
+int GetNode::calUsage(int cpu_idx, int user, int system, int idle)
 {
     long total = 0;
     long usage = 0;
@@ -272,7 +253,7 @@ int GetNode::calUsage(int cpu_idx, int user, int nice, int system, int idle)
 
 int GetNode::GetCPUUsage(void)
 {
-    char buf[80] = {0,};
+    char buf[80] = {0};
     char cpuid[8] = "cpu";
     int findCPU = 0;
     int user, system, nice, idle;
@@ -290,7 +271,7 @@ int GetNode::GetCPUUsage(void)
             findCPU = 1;
             sscanf(buf, "%s %d %d %d %d",
                    cpuid, &user, &nice, &system, &idle);
-            usage[cpu_index] = calUsage(cpu_index, user, nice, system, idle);
+            usage[cpu_index] = calUsage(cpu_index, user, system, idle);
             cpu_index++;
         }
         if (!strncmp(buf, "intr", 4))

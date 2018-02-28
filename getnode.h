@@ -26,9 +26,13 @@ typedef struct sensor__t {
 #define INA231_IOCSSTATUS   _IOW('i', 2, ina231_iocreg_t *)
 #define INA231_IOCGSTATUS   _IOR('i', 3, ina231_iocreg_t *)
 
+// A15
 #define DEV_SENSOR_ARM  "/dev/sensor_arm"
+// Mem
 #define DEV_SENSOR_MEM  "/dev/sensor_mem"
+// A7
 #define DEV_SENSOR_KFC  "/dev/sensor_kfc"
+// GPU
 #define DEV_SENSOR_G3D  "/dev/sensor_g3d"
 
 enum    {
@@ -65,6 +69,8 @@ public:
     void enable_sensor(sensor_t *sensor, unsigned char enable);
     int read_sensor_status(sensor_t *sensor);
     void read_sensor(sensor_t *sensor);
+
+    int getUpdatePeriodMicroSec(void);
 
     int OpenINA231(void);
     void CloseINA231(void);

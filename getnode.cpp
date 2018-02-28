@@ -44,6 +44,11 @@ std::string exec(const char* cmd) {
     return result;
 }
 
+int GetNode::getUpdatePeriodMicroSec() {
+  // default value from driver
+  return 263808;
+}
+
 void GetNode::GetSystemInfo()
 {
     kernel_ver = exec("bash -c \"uname -r\"");

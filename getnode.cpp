@@ -45,8 +45,9 @@ std::string exec(const char* cmd) {
 }
 
 int GetNode::getUpdatePeriodMicroSec() {
-  // default value from driver
-  return 263808;
+  // default value from driver is 263808
+  // change in /media/boot/exynos5422-odroidxu3.dtb (recompile with kernel)
+  return 10000;
 }
 
 void GetNode::GetSystemInfo()

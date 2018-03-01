@@ -34,7 +34,7 @@ int main(int argc, char ** argv) {
     return 1;
   }
 
-  cout << "output dir = " << resultDirPath << "/" << "\n";
+  //cout << "output dir = " << resultDirPath << "/" << "\n";
 
   ostringstream ossa15;
   ossa15 << resultDirPath << "/" << "a15_W.csv";
@@ -60,14 +60,11 @@ int main(int argc, char ** argv) {
   const char* memwPath = strmem.c_str();
   ofstream memwFile (memwPath);
 
-  cout << "a15wFile = " << a15wPath << " (open = " << a15wFile.is_open() << " )\n";
-  cout << "a7wFile = " << a7wPath << " (open = " << a7wFile.is_open() << " )\n";
-  cout << "gpuwFile = " << gpuwPath << " (open = " << gpuwFile.is_open() << " )\n";
-  cout << "memwFile = " << memwPath << " (open = " << memwFile.is_open() << " )\n";
-  
-  
-  
-  
+  //cout << "a15wFile = " << a15wPath << " (open = " << a15wFile.is_open() << " )\n";
+  //cout << "a7wFile = " << a7wPath << " (open = " << a7wFile.is_open() << " )\n";
+  //cout << "gpuwFile = " << gpuwPath << " (open = " << gpuwFile.is_open() << " )\n";
+  //cout << "memwFile = " << memwPath << " (open = " << memwFile.is_open() << " )\n";
+
   GetNode *getNode;
   getNode = new GetNode();
   getNode->OpenINA231();
@@ -84,7 +81,7 @@ int main(int argc, char ** argv) {
     float A7W = getNode->kfcuW;
     float MEMW = getNode->memuW;
 
-    cout << A15W << " " << A7W << " " << GPUW << " " << MEMW << "\n";
+    //cout << A15W << " " << A7W << " " << GPUW << " " << MEMW << "\n";
 
     // append values to the files
     a7wFile << A7W << " ";

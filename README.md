@@ -4,11 +4,9 @@
 #### Install packages and clone the source code.
 
 ```
-# sudo apt-get install qt4-default libqwt-dev
-# git clone https://github.com/hardkernel/EnergyMonitor.git
+# git clone https://github.com/preesm/EnergyRecorder.git
 ```
 #### Make!
 ```
-# qmake-qt4
-# make -j8
+# make -j2
 ```

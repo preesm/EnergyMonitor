@@ -5,22 +5,22 @@ using namespace std;
 
 class GetNode;
 
-int main()
-{
+
+
+int main() {
   GetNode *getNode;
   getNode = new GetNode();
   getNode->OpenINA231();
   
-  int updatePeriod = getNode->getUpdatePeriodMicroSec();
+  int updatePeriod = 100000; //us
   while (1) {
+    // probe values every updatePeriod us
     usleep(updatePeriod);
-    // probe values
     getNode->GetINA231();
     
-    cout << "probe" << "\n";
-    cout << getNode->armuW << " W" << "\n";
+    // outptu values
+    // todo ...
     
-    //
   }
   return 0;
 }

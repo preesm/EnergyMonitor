@@ -56,16 +56,23 @@ int main(int argc, char ** argv) {
     usleep(updatePeriod);
     getNode->GetINA231();
     
-    // outptu values
+    // get values
     float A15W = getNode->armuW;
     float GPUW = getNode->g3duW;
     float A7W = getNode->kfcuW;
     float MEMW = getNode->memuW;
 
+    // append values to the files
     a7wFile << A7W << " ";
     gpuwFile << GPUW << " ";
     a15wFile << A15W << " ";
     memwFile << MEMW << " ";
+
+    // flush stream to make sure we have the values
+    a7wFile.flush();
+    gpuwFile.flush();
+    a15wFile.flush();
+    memwFile.flush();
   }
   return 0;
 }

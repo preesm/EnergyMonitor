@@ -48,9 +48,13 @@ class GetNode
 public:
     GetNode();
     string cpu_node_list[8];
+    // A15
     float armuV,armuA, armuW;
+    // GPU
     float g3duV, g3duA, g3duW;
+    // A7
     float kfcuV, kfcuA, kfcuW;
+    // Mem
     float memuV, memuA, memuW;
     int usage[8];
     string os_name1;

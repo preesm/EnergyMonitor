@@ -14,13 +14,14 @@ class GetNode;
 unsigned char running = 1;
 
 void signalHandler( int signum ) {
-  if (signum == 2) {
+  if (signum == 2 || signum == 9) {
     running = 0;
   }
 }
 
 int main(int argc, char ** argv) {
   signal(2, signalHandler);
+  signal(9, signalHandler);
   
   string resultDirPath = ".";
   if (argc == 1) {

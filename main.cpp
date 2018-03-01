@@ -22,6 +22,8 @@ int main(int argc, char ** argv) {
     return 1;
   }
 
+  cout << "output dir = " << resultDirPath << "/" << "\n";
+
   ofstream a15wFile;
   ostringstream ossa15;
   ossa15 << resultDirPath << "/" << "a15w.csv";
@@ -62,6 +64,8 @@ int main(int argc, char ** argv) {
     float A7W = getNode->kfcuW;
     float MEMW = getNode->memuW;
 
+    cout << A15W << " " << A7W << " " << GPUW << " " << MEMW << "\n";
+
     // append values to the files
     a7wFile << A7W << " ";
     gpuwFile << GPUW << " ";
@@ -73,6 +77,7 @@ int main(int argc, char ** argv) {
     gpuwFile.flush();
     a15wFile.flush();
     memwFile.flush();
+    cout << "flush\n";
   }
   return 0;
 }

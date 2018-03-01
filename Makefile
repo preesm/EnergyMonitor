@@ -10,7 +10,8 @@ INCDIRS=
 LIBS=
 
 CXX=g++
-CXXFLAGS=-O2 -Wall -Wextra -Werror
+CXXFLAGS=-O2 -Wall -Wextra
+# -Werror
 
 all: $(TARGET)
 
@@ -31,3 +32,6 @@ install: $(TARGET)
 
 uninstall:
 	rm -fv $(PREFIX)/bin/$(TARGET)
+
+test: all
+	./$(TARGET) testdir

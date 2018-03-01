@@ -35,29 +35,26 @@ int main(int argc, char ** argv) {
 
   cout << "output dir = " << resultDirPath << "/" << "\n";
 
-  ofstream a15wFile;
   ostringstream ossa15;
-  ossa15 << resultDirPath << "/" << "a15w.csv";
+  ossa15 << resultDirPath << "/" << "a15_W.csv";
   const char* a15wPath = ossa15.str().c_str();
-  a15wFile.open (a15wPath);
+  ofstream a15wFile (a15wPath);
+  cout << "a15wFile = " << a15wPath << " (open = " << a15wFile.is_open() << " )\n";
 
-  ofstream a7wFile;
   ostringstream ossa7;
-  ossa7 << resultDirPath << "/" << "a7w.csv";
+  ossa7 << resultDirPath << "/" << "a7_W.csv";
   const char* a7wPath = ossa7.str().c_str();
-  a7wFile.open (a7wPath);
+  ofstream a7wFile (a7wPath);
 
-  ofstream gpuwFile;
   ostringstream ossgpu;
-  ossgpu << resultDirPath << "/" << "gpuw.csv";
+  ossgpu << resultDirPath << "/" << "gpu_W.csv";
   const char* gpuwPath = ossgpu.str().c_str();
-  gpuwFile.open (gpuwPath);
+  ofstream gpuwFile (gpuwPath);
 
-  ofstream memwFile;
   ostringstream ossmem;
-  ossmem << resultDirPath << "/" << "memw.csv";
+  ossmem << resultDirPath << "/" << "mem_W.csv";
   const char* memwPath = ossmem.str().c_str();
-  memwFile.open (memwPath);
+  ofstream memwFile (memwPath);
 
   GetNode *getNode;
   getNode = new GetNode();

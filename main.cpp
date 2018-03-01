@@ -37,7 +37,8 @@ int main(int argc, char ** argv) {
 
   ostringstream ossa15;
   ossa15 << resultDirPath << "/" << "a15_W.csv";
-  const char* a15wPath = ossa15.str().c_str();
+  string stra15 = ossa15.str();
+  const char* a15wPath = stra15.c_str();
   ofstream a15wFile (a15wPath);
   cout << "a15wFile = " << a15wPath << " (open = " << a15wFile.is_open() << " )\n";
 

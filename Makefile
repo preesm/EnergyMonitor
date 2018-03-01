@@ -10,7 +10,7 @@ INCDIRS=
 LIBS=
 
 CXX=g++
-CXXFLAGS=-O2 -Wall -Wextra
+CXXFLAGS=-O2 -Wall -Wextra -Werror
 
 all: $(TARGET)
 

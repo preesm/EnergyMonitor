@@ -5,7 +5,7 @@ using namespace std;
 
 class GetNode;
 
-int main(int argc, char *argv[])
+int main()
 {
   GetNode *getNode;
   getNode = new GetNode();

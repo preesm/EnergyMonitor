@@ -20,7 +20,7 @@ void signalHandler( int signum ) {
 }
 
 int main(int argc, char ** argv) {
-  signal(SIGINT, signalHandler);
+  signal(2, signalHandler);
   
   string resultDirPath = ".";
   if (argc == 1) {
@@ -40,23 +40,33 @@ int main(int argc, char ** argv) {
   string stra15 = ossa15.str();
   const char* a15wPath = stra15.c_str();
   ofstream a15wFile (a15wPath);
-  cout << "a15wFile = " << a15wPath << " (open = " << a15wFile.is_open() << " )\n";
 
   ostringstream ossa7;
   ossa7 << resultDirPath << "/" << "a7_W.csv";
-  const char* a7wPath = ossa7.str().c_str();
+  string stra7 = ossa7.str();
+  const char* a7wPath = stra7.c_str();
   ofstream a7wFile (a7wPath);
 
   ostringstream ossgpu;
   ossgpu << resultDirPath << "/" << "gpu_W.csv";
-  const char* gpuwPath = ossgpu.str().c_str();
+  string strgpu = ossgpu.str();
+  const char* gpuwPath = strgpu.c_str();
   ofstream gpuwFile (gpuwPath);
 
   ostringstream ossmem;
   ossmem << resultDirPath << "/" << "mem_W.csv";
-  const char* memwPath = ossmem.str().c_str();
+  string strmem = ossmem.str();
+  const char* memwPath = strmem.c_str();
   ofstream memwFile (memwPath);
 
+  cout << "a15wFile = " << a15wPath << " (open = " << a15wFile.is_open() << " )\n";
+  cout << "a7wFile = " << a7wPath << " (open = " << a7wFile.is_open() << " )\n";
+  cout << "gpuwFile = " << gpuwPath << " (open = " << gpuwFile.is_open() << " )\n";
+  cout << "memwFile = " << memwPath << " (open = " << memwFile.is_open() << " )\n";
+  
+  
+  
+  
   GetNode *getNode;
   getNode = new GetNode();
   getNode->OpenINA231();

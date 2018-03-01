@@ -12,12 +12,9 @@ class GetNode;
 int main(int argc, char ** argv) {
 
   string resultDirPath = ".";
-  if (argc == 0) {
-  } else if (argc == 1) {
-    cout << "using current dir for outputting results\n";
+  if (argc == 1) {
   } else if (argc == 2) {
-    cout << "using '" << argv[1] << "' for outputting results\n";
-    std::ostringstream oss;
+    ostringstream oss;
     oss << argv[1];
     resultDirPath = oss.str();
   } else  {
@@ -25,15 +22,29 @@ int main(int argc, char ** argv) {
     return 1;
   }
 
-  ofstream a7wFile;
   ofstream a15wFile;
-  ofstream gpuwFile;
-  ofstream memwFile;
+  ostringstream ossa15;
+  ossa15 << resultDirPath << "/" << "a15w.csv";
+  const char* a15wPath = ossa15.str().c_str();
+  a15wFile.open (a15wPath);
 
-  a7wFile.open ("a7w.csv");
-  a15wFile.open ("a15w.csv");
-  gpuwFile.open ("gpuw.csv");
-  memwFile.open ("memw.csv");
+  ofstream a7wFile;
+  ostringstream ossa7;
+  ossa7 << resultDirPath << "/" << "a7w.csv";
+  const char* a7wPath = ossa7.str().c_str();
+  a7wFile.open (a7wPath);
+
+  ofstream gpuwFile;
+  ostringstream ossgpu;
+  ossgpu << resultDirPath << "/" << "gpuw.csv";
+  const char* gpuwPath = ossgpu.str().c_str();
+  gpuwFile.open (gpuwPath);
+
+  ofstream memwFile;
+  ostringstream ossmem;
+  ossmem << resultDirPath << "/" << "memw.csv";
+  const char* memwPath = ossmem.str().c_str();
+  memwFile.open (memwPath);
 
   GetNode *getNode;
   getNode = new GetNode();
@@ -50,6 +61,11 @@ int main(int argc, char ** argv) {
     float GPUW = getNode->g3duW;
     float A7W = getNode->kfcuW;
     float MEMW = getNode->memuW;
+
+    a7wFile << A7W << " ";
+    gpuwFile << GPUW << " ";
+    a15wFile << A15W << " ";
+    memwFile << MEMW << " ";
   }
   return 0;
 }

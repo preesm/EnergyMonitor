@@ -91,8 +91,13 @@ int main(int argc, char ** argv) {
     a15wFile << A15W << " ";
     memwFile << MEMW << " ";
 
+    a7wFile.flush();
+    gpuwFile.flush();
+    a15wFile.flush();
+    memwFile.flush();
     usleep(updatePeriod);
   }
+  
   a7wFile.close();
   gpuwFile.close();
   a15wFile.close();

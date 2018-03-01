@@ -4,13 +4,24 @@
 #include <fstream>
 #include <sstream>
 #include <iomanip>
+#include <csignal>
 
 using namespace std;
 
 class GetNode;
 
-int main(int argc, char ** argv) {
 
+unsigned char running = 1;
+
+void signalHandler( int signum ) {
+  if (signum == 2) {
+    running = 0;
+  }
+}
+
+int main(int argc, char ** argv) {
+  signal(SIGINT, signalHandler);
+  
   string resultDirPath = ".";
   if (argc == 1) {
   } else if (argc == 2) {
@@ -53,9 +64,9 @@ int main(int argc, char ** argv) {
   getNode->OpenINA231();
 
   int updatePeriod = 100000; //us
-  while (1) {
+  usleep(updatePeriod);
+  while (running) {
     // probe values every updatePeriod us
-    usleep(updatePeriod);
     getNode->GetINA231();
     
     // get values
@@ -72,12 +83,11 @@ int main(int argc, char ** argv) {
     a15wFile << A15W << " ";
     memwFile << MEMW << " ";
 
-    // flush stream to make sure we have the values
-    a7wFile.flush();
-    gpuwFile.flush();
-    a15wFile.flush();
-    memwFile.flush();
-    cout << "flush\n";
+    usleep(updatePeriod);
   }
+  a7wFile.close();
+  gpuwFile.close();
+  a15wFile.close();
+  memwFile.close();
   return 0;
 }
